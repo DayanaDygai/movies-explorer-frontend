@@ -1,0 +1,112 @@
+.profile {
+    align-items: center;
+    box-sizing: border-box;
+    display: flex;
+    flex-direction: column;
+    flex-grow: 1;
+    padding: 74px 30px;
+  }
+  
+  @media (max-width: 848px) {
+    .profile {
+      padding: 236px 30px;
+    }
+  }
+  
+  @media (max-width: 426px) {
+    .profile {
+      align-items: center;
+      padding: 70px 30px 40px;
+    }
+  }
+  
+  .profile__title {
+    font-size: 24px;
+    line-height: 29px;
+    margin: 0 0 108px;
+    font-family: "Inter", "Arial", sans-serif;
+    font-weight: 400;
+  }
+  
+  @media (max-width: 848px) { 
+    .profile__title {
+      margin: 0px 0 96px;
+    }
+  }
+  
+  @media (max-width: 426px) { 
+    .profile__title {
+      margin: 0px auto 80px;
+    }
+  }
+  
+  .profile__form {
+    align-items: center;
+    display: flex;
+    flex-direction: column;
+    flex-grow: 1;
+    max-width: 410px;
+    gap: 8px;
+    width: 100%;
+    font-family: "Inter", "Arial", sans-serif;
+  }
+  
+  .profile__form .input__container:not(:last-of-type) {
+    margin-bottom: 10px;
+    border-bottom: 1px solid #e8e8e8;
+  }
+  
+  .profile__form .input__title {
+    top: 3px;
+    font-size: 11px;
+    font-weight: 500;
+    color: black;
+    margin-bottom: 18px;
+    font-family: "Inter", "Arial", sans-serif;
+  }
+  
+  .profile__button {
+    width: max-content;
+    padding: 0;
+    border: 0;
+    background: transparent;
+    color: inherit;
+    text-decoration-line: none;
+    transition: 0.3s;
+    -webkit-tap-highlight-color: transparent;
+    font-family: "Inter", "Arial", sans-serif;
+    font-size: 13px;
+  }
+  
+  .profile__button:hover {
+    opacity: 0.7;
+    user-select: none;
+    cursor: pointer;
+  }
+  
+  @media (max-width: 650px) {
+    .profile__button {
+      font-size: 12px;
+      line-height: 15px;
+    }
+  }
+  
+  .profile__button-submit {
+    margin: 195px 0 0 0;
+    font-size: 13px;
+    line-height: 1.23;
+    color: black;
+    font-family: "Inter", "Arial", sans-serif;
+  }
+  
+  @media (max-width: 650px) {
+    .profile__button-submit {
+      margin: 358px 0 0 0;
+    }
+  }
+  
+  .profile__button-exit {
+    margin-top: 10px;
+    color: #FF3055
+  }
+  

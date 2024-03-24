@@ -1,0 +1,124 @@
+.portfolio__container {
+    padding: 110px 70px;
+    box-sizing: border-box;
+    margin: 0 auto;
+    max-width: 1280px;
+    width: 100%;
+    padding: 0 70px;
+  }
+  
+  @media (max-width: 848px) { 
+    .portfolio__container {
+      padding: 0 50px;
+    }
+  }
+  
+  @media (max-width: 426px) { 
+    .portfolio__container {
+      padding: 0 14px;
+    }
+  }
+  
+  .portfolio__title {
+    color: #a0a0a0;
+    font-size: 18px;
+    font-weight: 400;
+    line-height: 20px;
+    margin: 0 0 51px;
+    font-family: "Inter", "Arial", sans-serif;
+  }
+  
+  @media (max-width: 426px) { 
+    .portfolio__title {
+      font-size: 14px;
+      line-height: 20px;
+      mix-blend-mode: normal;
+      margin: 0 0 40px;
+    }
+  }
+  
+  .portfolio__list {
+    display: flex;
+    flex-direction: column;
+    font-size: 30px;
+    gap: 19px;
+    line-height: 50px;
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    letter-spacing: -0.04em;
+  }
+  
+  @media (max-width: 848px) { 
+    .portfolio__list {
+      font-size: 28px;
+    }
+  }
+  
+  @media (max-width: 426px) {
+    .portfolio__list {
+      line-height: 1.785;
+      gap: 22px;
+    }
+  }
+  
+  @media (max-width: 426px) { 
+    .portfolio__list {
+      font-size: 17px;
+      line-height: 1.555;
+      letter-spacing: 0em;
+    }
+  }
+  
+  .portfolio__item:last-child {
+    padding-bottom: 105px;
+  }
+  
+  @media (max-width: 848px) { 
+    .portfolio__item:last-child {
+      padding-bottom: 90px;
+    }
+  }
+  
+  @media (max-width: 426px) { 
+    .portfolio__item:last-child {
+      padding-bottom: 70px;
+    }
+  }
+  
+  .portfolio__item:not(:last-child) {
+    border-bottom: 1px solid #e8e8e8;
+  }
+  
+  .portfolio__link {
+    box-sizing: border-box;
+    display: block;
+    padding: 0 30px 19px 0;
+    position: relative;
+    width: 100%;
+    color: inherit;
+    text-decoration-line: none;
+    transition: 0.3s;
+    -webkit-tap-highlight-color: transparent;
+    font-family: "Inter", "Arial", sans-serif;
+  }
+  
+  .portfolio__link:hover {
+    opacity: 0.8;
+    cursor: pointer;
+  }
+  
+  .portfolio__link-pic {
+    position: absolute;
+    top: 20px;
+    right: 3px;
+  }
+  
+  @media (max-width: 426px) { 
+    .portfolio__link-pic {
+      right: 6px;
+      top: 2px;
+      width: 10px;
+    }
+  }
+  
