@@ -1,12 +1,13 @@
 # dependencies
 /node_modules
+node_modules/
 /.pnp
 .pnp.js
 
 # testing
 /coverage
 
-# production
+# productiongit rm -r --cached node_modules
 /build
 
 # misc
