@@ -1,5 +1,5 @@
 .header__container {
-  padding: 19px 140px 19px 140px; /* Примерное значение для $default-padding */
+  padding: 19px 70px 19px 70px; 
   max-height: 74px;
   box-sizing: border-box;
   display: flex;
@@ -33,7 +33,6 @@
 .header__logo {
   max-width: 38px;
   max-height: 38px;
-  padding-left: 10px;
   display: flex;
   gap: 44px;
   align-items: center;

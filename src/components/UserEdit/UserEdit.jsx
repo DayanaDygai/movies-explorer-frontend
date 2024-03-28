@@ -27,8 +27,8 @@ function UserEdit() {
         required
         type="text"
         value="Виталий"
-        className={"input input_type_useredit"}
-        addClassName={" input_type_useredit-border"}
+        className={"input input_type_useredit input_type_useredit-border"}
+        addClassName={"input_type_useredit-conteiner"}
 
       />
       <Input
@@ -40,6 +40,7 @@ function UserEdit() {
         type="email"
         value="pochta@yandex.ru"
         className={"input input_type_useredit"}
+        addClassName={"input_type_useredit-conteiner"}
         required
       />
     </Profile>

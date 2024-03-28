@@ -4,7 +4,7 @@ import { Link } from 'react-router-dom';
 import HeaderLogo from '../../images/logo__header.svg';
 import styles from "./AuthForm.module.css"
 
-function AuthForm({ title, formName, onSubmit, btnText, children }) {
+function AuthForm({ title, formName, onSubmit, btnText, children, addClassName }) {
   return (
     <div className={styles["auth-form"]}> 
       <Link className={styles["auth-form__link-header"]} to="/"> 
@@ -18,13 +18,13 @@ function AuthForm({ title, formName, onSubmit, btnText, children }) {
         noValidate
       >
         {children}
-        <button 
+      </form>
+      <button 
           className={styles["authForm__submit-button"]}  
           type="submit"
         >
           {btnText}
         </button>
-      </form>
       {formName === 'registration' ? (
         <p className={styles["auth-form__footer"]}> 
           Уже зарегистрированы?

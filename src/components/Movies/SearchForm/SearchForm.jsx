@@ -19,6 +19,7 @@ function SearchForm() {
               name="search"
               type="search"
               placeholder='Фильм'
+              required
               value={search} 
               onChange={(e) => setSearch(e.target.value)}
             />

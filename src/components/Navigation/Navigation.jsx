@@ -7,18 +7,27 @@ import styles from './Navigation.module.css';
 
 function Navigation({isOpen}) {
   const navClass = isOpen ? `${styles.nav} ${styles.nav_open}` : styles.nav;
-  const activeClassName = ({ isActive }) => 
-    `${styles['nav__link']} ${isActive ? styles['active'] : ''}`;
+
+  function handleClickLink(e) {
+    if (e.currentTarget.className.includes('active')) {
+      return;
+    }
+  }
+
+  const activeClassName = ({ isActive }) => ` ${styles['nav__link']} ${isActive ? styles['active'] : ''}`;
 
   return (
     <nav className={navClass}>
       <ul className={styles['nav__list']}>
+
       <li className={`${styles['nav__item']} ${styles.nav__item_invisible}`}>
           <NavLink
             className={activeClassName}
             to="/"
             end
             aria-label="На главную"
+            onClick={handleClickLink}
+            
           >
             Главная
           </NavLink>
@@ -28,6 +37,7 @@ function Navigation({isOpen}) {
             className={activeClassName}
             to="movies"
             aria-label="Фильмы"
+            onClick={handleClickLink}
           >
             Фильмы
           </NavLink>
@@ -37,6 +47,7 @@ function Navigation({isOpen}) {
             className={activeClassName}
             to="saved-movies"
             aria-label="Сохранённые фильмы"
+            onClick={handleClickLink}
           >
             Сохранённые фильмы
           </NavLink>

@@ -13,7 +13,10 @@ const Promo = () => {
                 <span className={styles["promo__subtitle"]}>
                 Листайте ниже, чтобы узнать больше про этот проект и его создателя.
                 </span>
-                <button className={styles["promo__button"]}>Узнать больше</button>
+                
+                <button className={styles["promo__button"]}>
+                    <a href="#about-project" className={styles["promo__link"]}>Узнать больше </a>
+                </button>           
             </div>
             <div className={styles["promo__img-block"]}>
                 <img className={styles["promo__logo"]} src={logoPromo} alt="Лого" />

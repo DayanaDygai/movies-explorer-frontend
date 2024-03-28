@@ -1,4 +1,5 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
 import styles from './Profile.module.css'; 
 
 function Profile({children, SubmitBtnText, ExitBtnText }) {
@@ -25,8 +26,9 @@ function Profile({children, SubmitBtnText, ExitBtnText }) {
             className={`${styles["profile__button"]} ${styles["profile__button-exit"]}`}
             type="button"
             aria-label="Выйти из аккаунта"
-          >
+          > <Link to="/signin" className={styles["profile__link"]}>
             {ExitBtnText}
+            </Link>
           </button>
         </form>
     </div>

@@ -33,7 +33,7 @@
   
   @media (max-width: 650px) { 
     .search__form {
-      padding: 90px 0 110px;
+      padding: 84px 0 110px;
     }
   }
   
@@ -50,7 +50,7 @@
   .search__input {
     margin: 0;
     font-family: "Inter", "Arial", sans-serif;
-    margin-bottom: 13px; 
+    margin-bottom: 10px; 
     border: 0px;
     outline: none;
     color: #000;
@@ -97,6 +97,13 @@
     .search__button {
       font-size: 11px;
       margin-bottom: 9px;
+    }
+  }
+
+  @media (max-width: 650px) { 
+    .search__button {
+      width: 100%;
+      margin-left: 8px;
     }
   }
   
