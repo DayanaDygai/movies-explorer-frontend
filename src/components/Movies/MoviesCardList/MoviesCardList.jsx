@@ -59,7 +59,7 @@ function MoviesCardsList({ movies, isSavedMoviesPage  }) {
   };
 
   return (
-    <section className={styles["movies-list"]}>
+    <div className={styles["movies-list"]}>
       {visibleCards.map((movie, index) => (
           <MoviesCard
           key={index}
@@ -77,7 +77,7 @@ function MoviesCardsList({ movies, isSavedMoviesPage  }) {
           Ещё
         </button>
 
-    </section>
+    </div>
   );
 }
 

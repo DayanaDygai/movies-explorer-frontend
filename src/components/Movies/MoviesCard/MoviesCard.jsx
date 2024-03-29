@@ -46,7 +46,7 @@ function MoviesCard({ movieName, movieImage, movieLink, isLiked, onLike, isSaved
             /> )}
           </div>
         <div className={styles["movies-card__meta"]}>
-          <span className={styles["movie__duration"]}>1ч 42м</span>
+          <h2 className={styles["movie__duration"]}>1ч 42м</h2>
         </div>
       </div>
     </article>

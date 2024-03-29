@@ -12,7 +12,7 @@
     }
   }
   
-  @media (max-width: 426px) { 
+  @media (max-width: 650px) { 
     .about-project__container {
       padding: 70px 18px;
     }
@@ -26,7 +26,7 @@
     
   }
 
-  @media (max-width: 426px) { 
+  @media (max-width: 650px) { 
     .about-project__title {
       font-size: 18px;
     }
@@ -38,15 +38,15 @@
     width: 100%;
   }
 
-  @media (max-width: 426px) { 
-    .about-project__title:not(:last-child)  {
-      padding-bottom: 30px;
-    }
-  }
-  
   @media (max-width: 848px) { 
     .about-project__title:not(:last-child)  {
       padding-bottom: 24px;
+    }
+  }
+
+  @media (max-width: 650px) { 
+    .about-project__title:not(:last-child)  {
+      padding-bottom: 30px;
     }
   }
 
@@ -199,15 +199,16 @@
     line-height: 17px;
   }
   
-  @media (max-width: 600px) {
-    .about-project__deadline-item:nth-child(2) {
-      width: 65%;
-    }
-  }
 
   @media (max-width: 848px) {
     .about-project__deadline-item:nth-child(2) {
       width: 79%;
+    }
+  }
+
+  @media (max-width: 650px) {
+    .about-project__deadline-item:nth-child(2) {
+      width: 65%;
     }
   }
   

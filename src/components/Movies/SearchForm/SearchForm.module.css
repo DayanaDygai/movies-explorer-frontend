@@ -59,6 +59,7 @@
     border-radius: 9px;
     display: flex;
     flex-grow: 1;
+
   }
   
   .search__input::placeholder {
@@ -68,6 +69,8 @@
   @media (max-width: 650px) { 
     .search__input {
       padding: 0;
+      width: 100%; /* Растягиваем поле ввода на всю ширину */
+      margin-bottom: 15px; 
     }
   }
   
@@ -102,8 +105,10 @@
 
   @media (max-width: 650px) { 
     .search__button {
-      width: 100%;
-      margin-left: 8px;
+      width: 87px; 
+      background-size: 100%; 
+      margin-left: auto; 
+      margin-right: auto;
     }
   }
   

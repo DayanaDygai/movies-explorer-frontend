@@ -77,15 +77,11 @@
   flex-wrap: wrap;
   gap: 10px;
   margin: 25px 0 0;
-  font-family: "Inter", "Arial", sans-serif;
-  font-size: 11px;
-  line-height: 1.181;
-  color: #8b8b8b;
 }
 
 @media (max-width: 848px) {
   .movies-card__meta {
-    margin: 25px 0 16;
+    margin: 25px 0 0;
 
   }
 }
@@ -133,5 +129,14 @@
     display: block;
 
   }
+}
+
+.movie__duration {
+  font-family: "Inter", "Arial", sans-serif;
+  font-size: 11px;
+  line-height: 1.181;
+  color: #8b8b8b;
+  font-weight: 400;
+  margin: 0;
 }
 

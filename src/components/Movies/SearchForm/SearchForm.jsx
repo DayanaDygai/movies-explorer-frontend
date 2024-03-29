@@ -5,7 +5,7 @@ import styles from './SearchForm.module.css';
 function SearchForm() {
   const [search, setSearch] = useState("")
   return (
-    <section className={styles["search__container"]}>
+    <div className={styles["search__container"]}>
         <form
           className={styles["search__form"]}
           name="search"
@@ -32,7 +32,7 @@ function SearchForm() {
               <FilterCheckBox />
       
         </form>
-    </section>
+    </div>
   );
 }
 
