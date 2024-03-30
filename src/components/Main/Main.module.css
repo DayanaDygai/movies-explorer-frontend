@@ -1,0 +1,16 @@
+.main {
+  box-sizing: border-box;
+  font-size: 22px;
+  font-weight: 400;
+  margin: 0;
+  padding: 0;
+  width: 100%;
+  letter-spacing: -0.04em;
+  }
+  
+  @media (max-width: 426px) {
+    .main {
+      font-size: 18px;
+    }
+  }
+  
