@@ -16,6 +16,7 @@ import Register from '../Register/Register.jsx';
 import NotFound from '../NotFound/NotFound.jsx';
 import UserEdit from '../UserEdit/UserEdit.jsx';
 import Overlay from '../Overlay/Overlay.jsx';
+import Preloader from '../Movies/Preloader/Preloader.jsx';
 
 // API-функции и утилиты
 import { moviesApi } from '../../utils/MoviesApi';
@@ -36,6 +37,8 @@ import {
   messageKeys,
 } from '../../utils/constants';
 
+import styles from './App.module.css'
+
 function App() {
   // Получение токена из localStorage
   const jwt = localStorage.getItem('jwt');
@@ -45,6 +48,9 @@ function App() {
 
   // Указывает, идет ли в данный момент загрузка данных (например, выполнение запроса к API).
   const [isLoading, setIsLoading] = useState(false);
+
+  // Отображаем лоадер при initial-загрузке страницы
+  const [isFirstLoading, setIsFirstLoading] = useState(true);
 
   // Состояние, показывающее, авторизован ли пользователь в системе.
   const [isLoggedIn, setLoggedIn] = useState(false);
@@ -106,6 +112,7 @@ function App() {
         // Получение сохранённых фильмов
         const savedMovies = await getSavedMovies();
         updateSavedMovies(savedMovies);
+        setIsFirstLoading(false)
       }
     } catch (err) {
       console.error(err);
@@ -361,95 +368,103 @@ function App() {
   return (
     <CurrentUserContext.Provider value={currentUser}>
       <UserAuthContext.Provider value={isLoggedIn}>
-        <div className="app">
-          <Overlay />
-          <Header
-            isLoggedIn={isLoggedIn}
-            onBurgerClose={handleBurgerClose}
-            onClickBurger={handleClickBurger}
-          />
-          <Routes>
-            <Route
-              path="/signup"
-              element={
-                <Register
-                  handleSubmitRegistration={handleSubmitRegistration}
-                  isLoading={isLoading}
-                />
-              }
-            />
-            <Route
-              path="/signin"
-              element={
-                <Login
-                  handleSubmitLogin={handleSubmitLogin}
-                  isLoading={isLoading}
-                />
-              }
-            />
-            <Route path="/" element={<Main />} />
-            <Route
-              path="/profile"
-              element={
-                <ProtectedRoute
-                  element={UserEdit}
-                  isLoggedIn={isLoggedIn}
-                  handleUpdateUser={handleUpdateUser}
-                  handleLogout={handleLogout}
-                  isLoading={isLoading}
-                />
-              }
-            />
-            <Route
-              path="/movies"
-              element={
-                <ProtectedRoute
-                  element={Movies}
-                  isLoggedIn={isLoggedIn}
-                  movies={searchResults}
-                  setMovieSearchQuery={setMovieSearchQuery}
-                  movieSearchQuery={movieSearchQuery}
-                  handleSubmit={processMovieSearch}
-                  isLoading={isLoading}
-                  toggleMoviesFilter={toggleMoviesFilter}
-                  isShortMoviesFilterActive={isShortMoviesFilterActive}
-                  shortMovies={shortMovies}
-                  isMoviesNotFound={isMoviesNotFound}
-                  toggleFavoriteStatus={toggleFavoriteStatus}
-                  savedMovies={savedMovies}
-                />
-              }
-            />
-            <Route
-              path="/saved-movies"
-              element={
-                <ProtectedRoute
-                  element={SavedMovies}
-                  isLoggedIn={isLoggedIn}
-                  savedMovies={savedMovies}
-                  filteredSavedMovies={filteredSavedMovies}
-                  removeMovieById={removeMovieById}
-                  toggleSavedMoviesFilter={toggleSavedMoviesFilter}
-                  setIsShortSavedMoviesFilterActive={
-                    isShortSavedMoviesFilterActive
+        <div className={styles.app}>
+          {isFirstLoading ? (
+            <Preloader />
+          ) : (
+            <>
+              <Overlay />
+              <Header
+                isLoggedIn={isLoggedIn}
+                onBurgerClose={handleBurgerClose}
+                onClickBurger={handleClickBurger}
+              />
+              <Routes>
+                <Route
+                  path="/signup"
+                  element={
+                    <Register
+                      handleSubmitRegistration={handleSubmitRegistration}
+                      isLoading={isLoading}
+                    />
                   }
-                  shortSavedFilms={shortSavedMovies}
-                  setValueInputSavedMovie={setSavedMovieSearchQuery}
-                  valueInputSavedMovie={savedMovieSearchQuery}
-                  handleSubmitSearchSavedMovies={handleSubmitSearchSavedMovies}
-                  setsetIsShortSavedMoviesFilterActive={
-                    setIsShortSavedMoviesFilterActive
-                  }
-                  setFilteredSavedMovies={setFilteredSavedMovies}
-                  isSavedMoviesNotFound={isSavedMoviesNotFound}
-                  setIsSavedMoviesNotFound={setIsSavedMoviesNotFound}
                 />
-              }
-            />
-            <Route path="/404" element={<NotFound />} />
-            <Route path="*" element={<NotFound />} />
-          </Routes>
-          <Footer />
+                <Route
+                  path="/signin"
+                  element={
+                    <Login
+                      handleSubmitLogin={handleSubmitLogin}
+                      isLoading={isLoading}
+                    />
+                  }
+                />
+                <Route path="/" element={<Main />} />
+                <Route
+                  path="/profile"
+                  element={
+                    <ProtectedRoute
+                      element={UserEdit}
+                      isLoggedIn={isLoggedIn}
+                      handleUpdateUser={handleUpdateUser}
+                      handleLogout={handleLogout}
+                      isLoading={isLoading}
+                    />
+                  }
+                />
+                <Route
+                  path="/movies"
+                  element={
+                    <ProtectedRoute
+                      element={Movies}
+                      isLoggedIn={isLoggedIn}
+                      movies={searchResults}
+                      setMovieSearchQuery={setMovieSearchQuery}
+                      movieSearchQuery={movieSearchQuery}
+                      handleSubmit={processMovieSearch}
+                      isLoading={isLoading}
+                      toggleMoviesFilter={toggleMoviesFilter}
+                      isShortMoviesFilterActive={isShortMoviesFilterActive}
+                      shortMovies={shortMovies}
+                      isMoviesNotFound={isMoviesNotFound}
+                      toggleFavoriteStatus={toggleFavoriteStatus}
+                      savedMovies={savedMovies}
+                    />
+                  }
+                />
+                <Route
+                  path="/saved-movies"
+                  element={
+                    <ProtectedRoute
+                      element={SavedMovies}
+                      isLoggedIn={isLoggedIn}
+                      savedMovies={savedMovies}
+                      filteredSavedMovies={filteredSavedMovies}
+                      removeMovieById={removeMovieById}
+                      toggleSavedMoviesFilter={toggleSavedMoviesFilter}
+                      setIsShortSavedMoviesFilterActive={
+                        isShortSavedMoviesFilterActive
+                      }
+                      shortSavedFilms={shortSavedMovies}
+                      setValueInputSavedMovie={setSavedMovieSearchQuery}
+                      valueInputSavedMovie={savedMovieSearchQuery}
+                      handleSubmitSearchSavedMovies={
+                        handleSubmitSearchSavedMovies
+                      }
+                      setsetIsShortSavedMoviesFilterActive={
+                        setIsShortSavedMoviesFilterActive
+                      }
+                      setFilteredSavedMovies={setFilteredSavedMovies}
+                      isSavedMoviesNotFound={isSavedMoviesNotFound}
+                      setIsSavedMoviesNotFound={setIsSavedMoviesNotFound}
+                    />
+                  }
+                />
+                <Route path="/404" element={<NotFound />} />
+                <Route path="*" element={<NotFound />} />
+              </Routes>
+              <Footer />
+            </>
+          )}
         </div>
       </UserAuthContext.Provider>
     </CurrentUserContext.Provider>
