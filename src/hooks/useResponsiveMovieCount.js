@@ -6,7 +6,7 @@ const useResponsiveMovieCount = () => {
   const [displayedMovieCount, setDisplayedMovieCount] = useState(0);
   const [additionalMovieCount, setAdditionalMovieCount] = useState(0);
 
-   // Получаем ширину экрана пользователя.
+  // Получаем ширину экрана пользователя.
   const screenWidth = window.screen.width;
 
   // Используем эффект для автоматической установки количества фильмов в зависимости от ширины экрана.
@@ -23,7 +23,7 @@ const useResponsiveMovieCount = () => {
     }
   }, [screenWidth]);
 
-   // Функция для добавления дополнительных фильмов в список отображаемых.
+  // Функция для добавления дополнительных фильмов в список отображаемых.
   const loadMoreMovies = () => {
     setDisplayedMovieCount(displayedMovieCount + additionalMovieCount);
   };

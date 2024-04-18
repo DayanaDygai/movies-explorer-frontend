@@ -1,7 +1,7 @@
 import React from 'react';
 import SearchForm from './SearchForm/SearchForm.jsx';
 import MoviesCardsList from './MoviesCardList/MoviesCardList.jsx';
-import styles from './Movies.module.css'; 
+import styles from './Movies.module.css';
 
 // Компонент страницы "Фильмы"
 function Movies({
@@ -18,24 +18,24 @@ function Movies({
   savedMovies,
 }) {
   return (
-    <main className={styles["movies"]}>
+    <main className={styles['movies']}>
       {/* Вставляем компонент формы поиска */}
-      <SearchForm 
-       setMovieSearchQuery={setMovieSearchQuery}
-       handleSubmit={handleSubmit}
-       toggleMoviesFilter={toggleMoviesFilter}
-       movieSearchQuery={movieSearchQuery}
-       isShortMoviesFilterActive={isShortMoviesFilterActive}
+      <SearchForm
+        setMovieSearchQuery={setMovieSearchQuery}
+        handleSubmit={handleSubmit}
+        toggleMoviesFilter={toggleMoviesFilter}
+        movieSearchQuery={movieSearchQuery}
+        isShortMoviesFilterActive={isShortMoviesFilterActive}
       />
-       {/* Вставляем компонент списка карточек фильмов */}
+      {/* Вставляем компонент списка карточек фильмов */}
       <MoviesCardsList
-         movies={searchResults}
-         shortMovies={shortMovies}
-         isLoading={isLoading}
-         isMoviesNotFound={isMoviesNotFound}
-         isShortMoviesFilterActive={isShortMoviesFilterActive}
-         toggleFavoriteStatus={toggleFavoriteStatus}
-         savedMovies={savedMovies}
+        movies={searchResults}
+        shortMovies={shortMovies}
+        isLoading={isLoading}
+        isMoviesNotFound={isMoviesNotFound}
+        isShortMoviesFilterActive={isShortMoviesFilterActive}
+        toggleFavoriteStatus={toggleFavoriteStatus}
+        savedMovies={savedMovies}
       />
     </main>
   );

@@ -17,20 +17,25 @@ function Input({
   maxLength,
   type,
 }) {
-
   const { pathname } = useLocation();
 
   // Определение стиля заголовка в зависимости от маршрута
-  const titleClass = pathname === '/profile' ? 'input__title input__title_profile' : 'input__title';
-  
+  const titleClass =
+    pathname === '/profile'
+      ? 'input__title input__title_profile'
+      : 'input__title';
+
   // Определение класса ошибки
-  const errorClass = pathname === '/profile' ? 'input-error input-error__profile' : 'input-error';
+  const errorClass =
+    pathname === '/profile'
+      ? 'input-error input-error__profile'
+      : 'input-error';
 
   return (
     <div className={`input__container ${addClassName}`}>
       <span className={titleClass}>{title}</span>
       <input
-      type={type}
+        type={type}
         className={`${className} ${!fieldsValidity ? 'input_error' : ''}`}
         placeholder={placeholder}
         minLength={minLength}
@@ -40,9 +45,7 @@ function Input({
         value={value}
         onChange={handleChangeValidation}
       />
-      <p className={errorClass}>
-        {message}
-      </p>
+      <p className={errorClass}>{message}</p>
     </div>
   );
 }

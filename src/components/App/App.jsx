@@ -29,15 +29,18 @@ import {
   updateUserInfo,
 } from '../../utils/MainApi';
 import ProtectedRoute from '../../hooks/ProtectedRoute.jsx';
-import { excludeMovieById, filterShortFilms, filterMoviesByQuery, messageKeys } from '../../utils/constants';
-
-
+import {
+  excludeMovieById,
+  filterShortFilms,
+  filterMoviesByQuery,
+  messageKeys,
+} from '../../utils/constants';
 
 function App() {
-    // Получение токена из localStorage
+  // Получение токена из localStorage
   const jwt = localStorage.getItem('jwt');
 
-    //Хранит объект данных текущего пользователя, загруженного после аутентификации.
+  //Хранит объект данных текущего пользователя, загруженного после аутентификации.
   const [currentUser, setCurrentUser] = useState({});
 
   // Указывает, идет ли в данный момент загрузка данных (например, выполнение запроса к API).
@@ -46,7 +49,7 @@ function App() {
   // Состояние, показывающее, авторизован ли пользователь в системе.
   const [isLoggedIn, setLoggedIn] = useState(false);
 
-    // Состояния компонента
+  // Состояния компонента
   const [isMenuOpen, setStateMenu] = useState(false); //состояние открытого бургерного меню
   const [initialMovies, setInitialMovies] = useState([]); //все доступные фильмы
   const [searchResults, setSearchResults] = useState([]); //результаты поиска
@@ -56,18 +59,18 @@ function App() {
   const [shortSavedMovies, setShortSavedMovies] = useState([]); //массив сохраненных короткометражек
   const [movieSearchQuery, setMovieSearchQuery] = useState(''); //поиск фильмов
   const [savedMovieSearchQuery, setSavedMovieSearchQuery] = useState(''); //поиск сохраненных фильмов
-  const [isShortMoviesFilterActive, setIsShortMoviesFilterActive] = useState(false); //фильтр короткометражек
-  const [isShortSavedMoviesFilterActive, setIsShortSavedMoviesFilterActive] = useState(false); //фильтр сохраненных короткометражек
+  const [isShortMoviesFilterActive, setIsShortMoviesFilterActive] =
+    useState(false); //фильтр короткометражек
+  const [isShortSavedMoviesFilterActive, setIsShortSavedMoviesFilterActive] =
+    useState(false); //фильтр сохраненных короткометражек
   const [isMoviesNotFound, setIsMoviesNotFound] = useState(false); //состояние отсутсвия фильмв
   const [isSavedMoviesNotFound, setIsSavedMoviesNotFound] = useState(false); //отсутсвие сохраненного фильма
-
 
   // Хуки для навигации и доступа к текущему местоположению
   const navigate = useNavigate();
   const location = useLocation();
 
-
-// Инициализация приложения с загрузкой данных из localStorage
+  // Инициализация приложения с загрузкой данных из localStorage
   useEffect(() => {
     const localStorageData = JSON.parse(localStorage.getItem('savedData'));
 
@@ -81,28 +84,27 @@ function App() {
     }
   }, []);
 
-//  Проверка токена и автоматическая авторизация при наличии токена
+  //  Проверка токена и автоматическая авторизация при наличии токена
   useEffect(() => {
     checkToken();
-  // eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [isLoggedIn]);
 
-
-// Функция для проверки токена и получения данных пользователя
+  // Функция для проверки токена и получения данных пользователя
   async function checkToken() {
     const path = location.pathname;
     try {
-
       if (jwt) {
         const profileData = await getUserInfo(); // Получение данных профиля
         // авторизация пользователя
         setCurrentUser(profileData);
         setLoggedIn(true);
-        if (path !== '/signin') { // Если не на странице входа, перенаправляем
+        if (path !== '/signin') {
+          // Если не на странице входа, перенаправляем
           navigate(path);
         }
         // Получение сохранённых фильмов
-        const savedMovies = await getSavedMovies(); 
+        const savedMovies = await getSavedMovies();
         updateSavedMovies(savedMovies);
       }
     } catch (err) {
@@ -120,7 +122,7 @@ function App() {
     }
   }
 
-    // Функция регистрации пользователя
+  // Функция регистрации пользователя
   async function handleSubmitRegistration(e, name, email, password) {
     e.preventDefault();
     setIsLoading(true);
@@ -135,7 +137,7 @@ function App() {
     }
   }
 
-    // Обработчик входа пользователя
+  // Обработчик входа пользователя
   async function handleSubmitLogin(e, email, password) {
     e.preventDefault();
     setIsLoading(true);
@@ -144,10 +146,8 @@ function App() {
       setLoggedIn(true);
       navigate('/movies', { replace: true }); // Перенаправление на страницу с фильмами
       console.log(messageKeys.LOGIN_SUCCESS);
-     
     } catch (err) {
       console.error(err);
-     
     } finally {
       setIsLoading(false);
     }
@@ -166,7 +166,6 @@ function App() {
     } catch (err) {
       console.error(err);
       console.log(messageKeys.SERVER_ERROR);
-
     }
   }
 
@@ -190,27 +189,23 @@ function App() {
       const savedMovies = await getSavedMovies(); // Получение обновлённого списка сохранённых фильмов
       updateSavedMovies(savedMovies); // Обновление состояния с новым списком
       console.log(messageKeys.FAVORITE_MOVIE_ADDED);
-
     } catch (err) {
       console.error(err);
       console.log(messageKeys.SERVER_ERROR);
-
     }
   }
 
-// Функция для удаления фильма из списка сохранённых
+  // Функция для удаления фильма из списка сохранённых
   async function deletedMovie(movieId) {
     try {
       const film = savedMovies.find((movie) => movie.movieId === movieId);
-      await deleteSavedMovie(film._id);  // API запрос на удаление фильма
+      await deleteSavedMovie(film._id); // API запрос на удаление фильма
       const newCards = excludeMovieById(savedMovies, film._id); // Фильтрация списка фильмов после удаления
       updateSavedMovies(newCards); // Обновление состояния с новым списком
       console.log(messageKeys.FAVORITE_MOVIE_REMOVED);
-     
     } catch (err) {
       console.error(err);
       console.log(messageKeys.SERVER_ERROR);
-     
     }
   }
 
@@ -221,11 +216,9 @@ function App() {
       const newCards = excludeMovieById(savedMovies, cardID); // Фильтрация списка фильмов после удаления
       updateSavedMovies(newCards); // Обновление состояния с новым списком
       console.log(messageKeys.FAVORITE_MOVIE_REMOVED);
-     
     } catch (err) {
       console.error(err);
       console.log(messageKeys.SERVER_ERROR);
-     
     }
   }
 
@@ -234,7 +227,6 @@ function App() {
     setIsMoviesNotFound(filteredMovies.length === 0);
   }
 
-  
   function updateSavedMoviesNotFoundStatus(filteredSavedMovies) {
     setIsSavedMoviesNotFound(filteredSavedMovies.length === 0);
   }
@@ -244,18 +236,19 @@ function App() {
     try {
       if (initialMovies.length !== 0) {
         setIsShortMoviesFilterActive(e.target.checked);
-        const filteredMovies = filterMoviesByQuery(initialMovies, movieSearchQuery);
+        const filteredMovies = filterMoviesByQuery(
+          initialMovies,
+          movieSearchQuery,
+        );
         updateAndSaveMovies(e.target.checked, filteredMovies);
       }
     } catch (err) {
       console.error(err);
       console.log(messageKeys.SERVER_ERROR);
-     
     }
   }
 
-
-// Обработчик изменения состояния чекбокса фильтра короткометражных фильмов
+  // Обработчик изменения состояния чекбокса фильтра короткометражных фильмов
   function toggleSavedMoviesFilter(e) {
     try {
       setIsShortSavedMoviesFilterActive(e.target.checked);
@@ -266,34 +259,38 @@ function App() {
     }
   }
 
-// Обработчик поиска фильмов
-async function processMovieSearch(e, valueCheckbox) {
-  e.preventDefault();
-  setIsLoading(true);
+  // Обработчик поиска фильмов
+  async function processMovieSearch(e, valueCheckbox) {
+    e.preventDefault();
+    setIsLoading(true);
 
-  try {
-    if (movieSearchQuery.trim() === '') {  // Используем trim() для проверки на пустые строки
-      throw new Error(messageKeys.SEARCH_KEYWORD_REQUIRED);
+    try {
+      if (movieSearchQuery.trim() === '') {
+        // Используем trim() для проверки на пустые строки
+        throw new Error(messageKeys.SEARCH_KEYWORD_REQUIRED);
+      }
+      // Загрузка фильмов, если они ещё не были загружены
+      let moviesToFilter =
+        initialMovies.length > 0 ? initialMovies : await moviesApi();
+      if (initialMovies.length === 0) {
+        setInitialMovies(moviesToFilter);
+      }
+      const filteredMovies = filterMoviesByQuery(
+        moviesToFilter,
+        movieSearchQuery,
+      );
+      updateAndSaveMovies(valueCheckbox, filteredMovies);
+    } catch (err) {
+      console.error('Error during movie search:', err); // Улучшенная обработка ошибок
+      if (err.message === messageKeys.SEARCH_KEYWORD_REQUIRED) {
+        console.log(messageKeys.SEARCH_KEYWORD_REQUIRED); // Специфическая обработка ошибки по ключевому слову
+      } else {
+        console.log(messageKeys.SERVER_ERROR); // Обработка прочих ошибок
+      }
+    } finally {
+      setIsLoading(false);
     }
-    // Загрузка фильмов, если они ещё не были загружены
-    let moviesToFilter = initialMovies.length > 0 ? initialMovies : await moviesApi();
-    if (initialMovies.length === 0) {
-      setInitialMovies(moviesToFilter);
-    }
-    const filteredMovies = filterMoviesByQuery(moviesToFilter, movieSearchQuery);
-    updateAndSaveMovies(valueCheckbox, filteredMovies);
-  } catch (err) {
-    console.error('Error during movie search:', err);  // Улучшенная обработка ошибок
-    if (err.message === messageKeys.SEARCH_KEYWORD_REQUIRED) {
-      console.log(messageKeys.SEARCH_KEYWORD_REQUIRED);  // Специфическая обработка ошибки по ключевому слову
-    } else {
-      console.log(messageKeys.SERVER_ERROR);  // Обработка прочих ошибок
-    }
-  } finally {
-    setIsLoading(false);
   }
-}
-
 
   // Функция для обновления и сохранения текущего поиска в localStorage
   function updateAndSaveMovies(checkbox, movies) {
@@ -303,7 +300,12 @@ async function processMovieSearch(e, valueCheckbox) {
 
     localStorage.setItem(
       'savedData',
-      JSON.stringify({ checkbox: checkbox, text: movieSearchQuery, movies: movies, initialMovies: initialMovies })
+      JSON.stringify({
+        checkbox: checkbox,
+        text: movieSearchQuery,
+        movies: movies,
+        initialMovies: initialMovies,
+      }),
     );
   }
 
@@ -321,7 +323,10 @@ async function processMovieSearch(e, valueCheckbox) {
   // Обновление отфильтрованных сохранённых фильмов
   function refreshFilteredSavedMovies() {
     try {
-      const filteredSavedMovies = filterMoviesByQuery(savedMovies, savedMovieSearchQuery);
+      const filteredSavedMovies = filterMoviesByQuery(
+        savedMovies,
+        savedMovieSearchQuery,
+      );
       setFilteredSavedMovies(filteredSavedMovies);
       setShortSavedMovies(filterShortFilms(filteredSavedMovies));
       updateSavedMoviesNotFoundStatus(filteredSavedMovies);
@@ -337,38 +342,35 @@ async function processMovieSearch(e, valueCheckbox) {
       const updated = await updateUserInfo(name, email);
       setCurrentUser(updated);
       console.log(messageKeys.PROFILE_UPDATED);
-     
     } catch (err) {
       console.error(err);
-     
     } finally {
       setIsLoading(false);
     }
   }
 
-    // Открыть бургер-меню
-    function handleClickBurger() {
-      setStateMenu(!isMenuOpen);
-    }
-    // Закрыть бургер-меню
-    function handleBurgerClose() {
-      setStateMenu(false);
-    }
-
+  // Открыть бургер-меню
+  function handleClickBurger() {
+    setStateMenu(!isMenuOpen);
+  }
+  // Закрыть бургер-меню
+  function handleBurgerClose() {
+    setStateMenu(false);
+  }
 
   return (
     <CurrentUserContext.Provider value={currentUser}>
       <UserAuthContext.Provider value={isLoggedIn}>
-    <div className="app">
-        <Overlay />
-          <Header 
-          isLoggedIn={isLoggedIn}
-          onBurgerClose={handleBurgerClose}
-          onClickBurger={handleClickBurger}
+        <div className="app">
+          <Overlay />
+          <Header
+            isLoggedIn={isLoggedIn}
+            onBurgerClose={handleBurgerClose}
+            onClickBurger={handleClickBurger}
           />
-      <Routes>
-      <Route
-              path='/signup'
+          <Routes>
+            <Route
+              path="/signup"
               element={
                 <Register
                   handleSubmitRegistration={handleSubmitRegistration}
@@ -376,8 +378,8 @@ async function processMovieSearch(e, valueCheckbox) {
                 />
               }
             />
-        <Route
-              path='/signin'
+            <Route
+              path="/signin"
               element={
                 <Login
                   handleSubmitLogin={handleSubmitLogin}
@@ -385,9 +387,9 @@ async function processMovieSearch(e, valueCheckbox) {
                 />
               }
             />
-        <Route path="/" element={<Main />} />
-        <Route
-              path='/profile'
+            <Route path="/" element={<Main />} />
+            <Route
+              path="/profile"
               element={
                 <ProtectedRoute
                   element={UserEdit}
@@ -398,8 +400,8 @@ async function processMovieSearch(e, valueCheckbox) {
                 />
               }
             />
-        <Route
-              path='/movies'
+            <Route
+              path="/movies"
               element={
                 <ProtectedRoute
                   element={Movies}
@@ -418,8 +420,8 @@ async function processMovieSearch(e, valueCheckbox) {
                 />
               }
             />
-         <Route
-              path='/saved-movies'
+            <Route
+              path="/saved-movies"
               element={
                 <ProtectedRoute
                   element={SavedMovies}
@@ -428,27 +430,28 @@ async function processMovieSearch(e, valueCheckbox) {
                   filteredSavedMovies={filteredSavedMovies}
                   removeMovieById={removeMovieById}
                   toggleSavedMoviesFilter={toggleSavedMoviesFilter}
-                  setIsShortSavedMoviesFilterActive={isShortSavedMoviesFilterActive}
+                  setIsShortSavedMoviesFilterActive={
+                    isShortSavedMoviesFilterActive
+                  }
                   shortSavedFilms={shortSavedMovies}
                   setValueInputSavedMovie={setSavedMovieSearchQuery}
                   valueInputSavedMovie={savedMovieSearchQuery}
                   handleSubmitSearchSavedMovies={handleSubmitSearchSavedMovies}
-                  setsetIsShortSavedMoviesFilterActive={setIsShortSavedMoviesFilterActive}
+                  setsetIsShortSavedMoviesFilterActive={
+                    setIsShortSavedMoviesFilterActive
+                  }
                   setFilteredSavedMovies={setFilteredSavedMovies}
                   isSavedMoviesNotFound={isSavedMoviesNotFound}
                   setIsSavedMoviesNotFound={setIsSavedMoviesNotFound}
                 />
               }
             />
-        <Route path="/404" element={<NotFound />} />
-        <Route
-              path='*'
-              element={<NotFound />}
-            />
-      </Routes>
-      <Footer />
-    </div>
-    </UserAuthContext.Provider>
+            <Route path="/404" element={<NotFound />} />
+            <Route path="*" element={<NotFound />} />
+          </Routes>
+          <Footer />
+        </div>
+      </UserAuthContext.Provider>
     </CurrentUserContext.Provider>
   );
 }

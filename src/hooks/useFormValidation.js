@@ -11,7 +11,10 @@ export function useFormValidation() {
     //записываем имя инпута и сообщение об ошибке в объект, чтобы потом передать сообщение в <span>
     setErrors({ ...errors, [e.target.name]: e.target.validationMessage });
     //записываем имя инпута и проверку валидности в объект, чтобы использовать подсветку невалидного инпута
-    setFieldsValidity({ ...fieldsValidity, [e.target.name]: e.target.checkValidity() });
+    setFieldsValidity({
+      ...fieldsValidity,
+      [e.target.name]: e.target.checkValidity(),
+    });
     setFormValues({ ...formValues, [e.target.name]: e.target.value });
   }
 
@@ -28,7 +31,7 @@ export function useFormValidation() {
       setErrors(newErrors);
       setIsFormValid(newIsValid);
     },
-    [setFormValues, setErrors, setIsFormValid]
+    [setFormValues, setErrors, setIsFormValid],
   );
 
   return {

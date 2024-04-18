@@ -1,6 +1,6 @@
 //компонент с использованными технологиями.
 import React from 'react';
-import styles from "./Techs.module.css"
+import styles from './Techs.module.css';
 
 function Techs() {
   return (
