@@ -81,6 +81,10 @@
   }
 }
 
+/* .nav__link:focus{
+  font-weight: 500;
+} */
+
 .nav__item_invisible {
   display: none;
 }
@@ -131,6 +135,14 @@
   .nav_open {
     width: 100%;
   }
+}
+
+.inactive {
+  font-weight: 400;
+}
+
+.active {
+  font-weight: 500;
 }
 
 @media (max-width: 848px) {

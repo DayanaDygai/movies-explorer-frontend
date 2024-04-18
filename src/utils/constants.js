@@ -13,12 +13,16 @@ export const NAME_VALIDATION_REGEX = /^[А-ЯA-Zё\s-]+$/imu;
 
 export const messageKeys = {
   REGISTRATION_SUCCESS: 'Регистрация успешно завершена',
+  REGISTRATION_ERROR: 'Ошибка регистрации. Проверьте корректность данных',
   LOGIN_SUCCESS: 'Авторизация успешна',
+  LOGIN_ERROR: 'Неверный логин или пароль',
   LOGOUT_SUCCESS: 'Выход из аккаунта выполнен',
   SERVER_ERROR: 'Ошибка сервера',
+  SAVEDMOVIES_ERROR:
+    'Не смогли загрузить список фильмов. Попробуйте обновить страницу.',
   FAVORITE_MOVIE_ADDED: 'Фильм сохранен',
   FAVORITE_MOVIE_REMOVED: 'Фильм удален из сохраненных',
-  SEARCH_KEYWORD_REQUIRED: 'Введите ключевое слово',
+  SEARCH_KEYWORD_REQUIRED: 'Нужно ввести ключевое слово',
   PROFILE_UPDATED: 'Данные профиля успешно обновлены',
   EMAIL_FORMAT_ERROR: 'Введите корректный email адрес',
   NAME_FORMAT_ERROR: 'Имя должно содержать только буквы, пробелы или дефисы',

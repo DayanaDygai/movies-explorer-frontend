@@ -5,7 +5,7 @@ import { useFormValidation } from '../../hooks/useFormValidation.js';
 import { EMAIL_VALIDATION_REGEX, messageKeys } from '../../utils/constants';
 
 // Компонент Login реализует форму входа в систему.
-function Login({ handleSubmitLogin, isLoading }) {
+function Login({ handleSubmitLogin, isLoading, isLoggedIn }) {
   const {
     isFormValid,
     errors,
@@ -22,6 +22,11 @@ function Login({ handleSubmitLogin, isLoading }) {
     setFieldsValidity({ name: true, email: true, password: true });
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
+
+  if (isLoggedIn) {
+    window.location.href = '/movies';
+    return null;
+  }
 
   return (
     <AuthForm

@@ -12,6 +12,7 @@ function Profile({
   ExitBtnText,
   handleLogout,
   children,
+  isDisabledSubmitButton,
 }) {
   return (
     <div className={styles['profile']}>
@@ -35,6 +36,7 @@ function Profile({
             className={`${styles['profile__button']} ${styles['profile__button-submit']}`}
             type="submit"
             aria-label="Редактировать данные"
+            disabled={isDisabledSubmitButton}
           >
             {SubmitBtnText}
           </button>

@@ -32,7 +32,7 @@ function Navigation({ isOpen }) {
 
   // Определение класса активной ссылки
   const activeClassName = ({ isActive }) =>
-    ` ${styles['nav__link']} ${isActive ? styles['active'] : ''}`;
+    ` ${styles['nav__link']} ${isActive ? styles['active'] : styles['inactive']}`;
 
   return (
     <nav className={navClass}>

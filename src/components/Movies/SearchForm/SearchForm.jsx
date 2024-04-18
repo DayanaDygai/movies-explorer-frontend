@@ -77,9 +77,7 @@ function SearchForm({
               name="search"
               type="search"
               required
-              placeholder={
-                formValidation ? 'Фильм' : 'Нужно ввести ключевое слово'
-              }
+              placeholder="Фильм"
               tabIndex={1}
               value={valueInputSavedMovie}
               onChange={(e) => setValueInputSavedMovie(e.target.value)}

@@ -9,7 +9,7 @@ import {
 } from '../../utils/constants';
 
 // Компонент регистрации
-function Registration({ handleSubmitRegistration, isLoading }) {
+function Registration({ handleSubmitRegistration, isLoading, isLoggedIn }) {
   // Деструктуризация свойств из хука валидации формы
   const {
     isFormValid,
@@ -20,6 +20,7 @@ function Registration({ handleSubmitRegistration, isLoading }) {
     formValues,
     validateInputField,
   } = useFormValidation();
+
   const { name, email, password } = formValues; // Деструктуризация значений из состояния формы
 
   // Эффект для установки начальной валидности полей формы при монтировании компонента
@@ -27,6 +28,11 @@ function Registration({ handleSubmitRegistration, isLoading }) {
     setFieldsValidity({ name: true, email: true, password: true });
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
+
+  if (isLoggedIn) {
+    window.location.href = '/movies';
+    return null;
+  }
 
   return (
     <AuthForm

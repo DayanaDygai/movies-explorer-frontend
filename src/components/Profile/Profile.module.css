@@ -85,6 +85,12 @@
   cursor: pointer;
 }
 
+.profile__button:disabled {
+  color: #ccc; /* Серый цвет текста для неактивного состояния */
+  cursor: not-allowed; /* Курсор в виде запрета */
+  opacity: 0.5; /* Полупрозрачность для неактивной кнопки */
+}
+
 @media (max-width: 650px) {
   .profile__button {
     font-size: 12px;

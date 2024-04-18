@@ -1,7 +1,7 @@
 // Импорты необходимых библиотек и компонентов
 
 import { useEffect, useState } from 'react';
-import { Route, Routes, useLocation, useNavigate } from 'react-router-dom';
+import { Route, Routes, useNavigate } from 'react-router-dom';
 import { UserAuthContext } from '../../context/UserAuthContext.js';
 import { CurrentUserContext } from '../../context/CurrentUserContext';
 
@@ -16,7 +16,7 @@ import Register from '../Register/Register.jsx';
 import NotFound from '../NotFound/NotFound.jsx';
 import UserEdit from '../UserEdit/UserEdit.jsx';
 import Overlay from '../Overlay/Overlay.jsx';
-import Preloader from '../Movies/Preloader/Preloader.jsx';
+import Preloader from '../Preloader/Preloader.jsx';
 
 // API-функции и утилиты
 import { moviesApi } from '../../utils/MoviesApi';
@@ -37,7 +37,7 @@ import {
   messageKeys,
 } from '../../utils/constants';
 
-import styles from './App.module.css'
+import styles from './App.module.css';
 
 function App() {
   // Получение токена из localStorage
@@ -74,7 +74,6 @@ function App() {
 
   // Хуки для навигации и доступа к текущему местоположению
   const navigate = useNavigate();
-  const location = useLocation();
 
   // Инициализация приложения с загрузкой данных из localStorage
   useEffect(() => {
@@ -94,28 +93,45 @@ function App() {
   useEffect(() => {
     checkToken();
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [isLoggedIn]);
+  }, []);
 
   // Функция для проверки токена и получения данных пользователя
   async function checkToken() {
-    const path = location.pathname;
     try {
       if (jwt) {
-        const profileData = await getUserInfo(); // Получение данных профиля
-        // авторизация пользователя
+        // Получение данных профиля
+        const profileData = await getUserInfo();
+
+        // Авторизация пользователя
         setCurrentUser(profileData);
         setLoggedIn(true);
-        if (path !== '/signin') {
-          // Если не на странице входа, перенаправляем
-          navigate(path);
-        }
+
+        setIsFirstLoading(false);
+
         // Получение сохранённых фильмов
-        const savedMovies = await getSavedMovies();
+        const savedMovies = await fetchSavedMovies();
         updateSavedMovies(savedMovies);
-        setIsFirstLoading(false)
       }
     } catch (err) {
+      alert(messageKeys.SERVER_ERROR);
+    } finally {
+      setIsFirstLoading(false);
+    }
+  }
+
+  // Получение списка сохранённых фильмов
+  async function fetchSavedMovies() {
+    try {
+      setIsLoading(true);
+
+      const savedMovies = await getSavedMovies();
+
+      return savedMovies;
+    } catch (err) {
+      alert(messageKeys.SAVEDMOVIES_ERROR);
       console.error(err);
+    } finally {
+      setIsLoading(false);
     }
   }
 
@@ -125,7 +141,7 @@ function App() {
       setSavedMovies(savedMovies);
       setShortSavedMovies(filterShortFilms(savedMovies));
     } catch (err) {
-      console.error(err);
+      alert(messageKeys.SERVER_ERROR);
     }
   }
 
@@ -136,8 +152,8 @@ function App() {
     try {
       await register(name, email, password); // Регистрация пользователя
       await handleSubmitLogin(e, email, password); // Автоматический вход после регистрации
-      console.log(messageKeys.REGISTRATION_SUCCESS);
     } catch (err) {
+      alert(messageKeys.REGISTRATION_ERROR);
       console.error(err);
     } finally {
       setIsLoading(false);
@@ -152,9 +168,8 @@ function App() {
       await login(email, password); // Вход пользователя
       setLoggedIn(true);
       navigate('/movies', { replace: true }); // Перенаправление на страницу с фильмами
-      console.log(messageKeys.LOGIN_SUCCESS);
     } catch (err) {
-      console.error(err);
+      alert(messageKeys.LOGIN_ERROR);
     } finally {
       setIsLoading(false);
     }
@@ -169,10 +184,9 @@ function App() {
       setMovieSearchQuery('');
       setIsShortMoviesFilterActive(false);
       navigate('/', { replace: true });
-      console.log(messageKeys.LOGOUT_SUCCESS);
     } catch (err) {
       console.error(err);
-      console.log(messageKeys.SERVER_ERROR);
+      alert(messageKeys.SERVER_ERROR);
     }
   }
 
@@ -180,25 +194,23 @@ function App() {
   async function toggleFavoriteStatus(e, dataMovie) {
     try {
       if (e.target.checked) {
-        saveMovieAndRefreshList(dataMovie);
+        saveMovie(dataMovie);
       } else {
         deletedMovie(dataMovie.movieId);
       }
     } catch (err) {
-      console.error(err);
+      alert(messageKeys.SERVER_ERROR);
     }
   }
 
   //функция сохранения фильма
-  async function saveMovieAndRefreshList(dataMovie) {
+  async function saveMovie(dataMovie) {
     try {
-      await setSavedMovie(dataMovie); // API запрос на сохранение фильма
-      const savedMovies = await getSavedMovies(); // Получение обновлённого списка сохранённых фильмов
-      updateSavedMovies(savedMovies); // Обновление состояния с новым списком
-      console.log(messageKeys.FAVORITE_MOVIE_ADDED);
+      const newSavedMovie = await setSavedMovie(dataMovie); // API запрос на сохранение фильма
+      updateSavedMovies([...savedMovies, newSavedMovie]); // Обновление состояния с новым списком
     } catch (err) {
       console.error(err);
-      console.log(messageKeys.SERVER_ERROR);
+      alert(messageKeys.SERVER_ERROR);
     }
   }
 
@@ -209,10 +221,9 @@ function App() {
       await deleteSavedMovie(film._id); // API запрос на удаление фильма
       const newCards = excludeMovieById(savedMovies, film._id); // Фильтрация списка фильмов после удаления
       updateSavedMovies(newCards); // Обновление состояния с новым списком
-      console.log(messageKeys.FAVORITE_MOVIE_REMOVED);
     } catch (err) {
       console.error(err);
-      console.log(messageKeys.SERVER_ERROR);
+      alert(messageKeys.SERVER_ERROR);
     }
   }
 
@@ -222,10 +233,9 @@ function App() {
       await deleteSavedMovie(cardID); // API запрос на удаление фильма по ID
       const newCards = excludeMovieById(savedMovies, cardID); // Фильтрация списка фильмов после удаления
       updateSavedMovies(newCards); // Обновление состояния с новым списком
-      console.log(messageKeys.FAVORITE_MOVIE_REMOVED);
     } catch (err) {
       console.error(err);
-      console.log(messageKeys.SERVER_ERROR);
+      alert(messageKeys.SERVER_ERROR);
     }
   }
 
@@ -251,7 +261,7 @@ function App() {
       }
     } catch (err) {
       console.error(err);
-      console.log(messageKeys.SERVER_ERROR);
+      alert(messageKeys.SERVER_ERROR);
     }
   }
 
@@ -262,7 +272,7 @@ function App() {
       refreshFilteredSavedMovies();
     } catch (err) {
       console.error(err);
-      console.log(messageKeys.SERVER_ERROR);
+      alert(messageKeys.SERVER_ERROR);
     }
   }
 
@@ -274,7 +284,8 @@ function App() {
     try {
       if (movieSearchQuery.trim() === '') {
         // Используем trim() для проверки на пустые строки
-        throw new Error(messageKeys.SEARCH_KEYWORD_REQUIRED);
+        alert(messageKeys.SEARCH_KEYWORD_REQUIRED);
+        return;
       }
       // Загрузка фильмов, если они ещё не были загружены
       let moviesToFilter =
@@ -288,12 +299,7 @@ function App() {
       );
       updateAndSaveMovies(valueCheckbox, filteredMovies);
     } catch (err) {
-      console.error('Error during movie search:', err); // Улучшенная обработка ошибок
-      if (err.message === messageKeys.SEARCH_KEYWORD_REQUIRED) {
-        console.log(messageKeys.SEARCH_KEYWORD_REQUIRED); // Специфическая обработка ошибки по ключевому слову
-      } else {
-        console.log(messageKeys.SERVER_ERROR); // Обработка прочих ошибок
-      }
+      alert(messageKeys.SERVER_ERROR);
     } finally {
       setIsLoading(false);
     }
@@ -321,9 +327,14 @@ function App() {
     e.preventDefault();
 
     try {
+      if (savedMovieSearchQuery.trim() === '') {
+        // Используем trim() для проверки на пустые строки
+        alert(messageKeys.SEARCH_KEYWORD_REQUIRED);
+        return;
+      }
       refreshFilteredSavedMovies();
     } catch (err) {
-      console.error(err);
+      alert(messageKeys.SERVER_ERROR);
     }
   }
 
@@ -348,9 +359,9 @@ function App() {
     try {
       const updated = await updateUserInfo(name, email);
       setCurrentUser(updated);
-      console.log(messageKeys.PROFILE_UPDATED);
+      alert(messageKeys.PROFILE_UPDATED);
     } catch (err) {
-      console.error(err);
+      alert(messageKeys.SERVER_ERROR);
     } finally {
       setIsLoading(false);
     }
@@ -384,8 +395,9 @@ function App() {
                   path="/signup"
                   element={
                     <Register
-                      handleSubmitRegistration={handleSubmitRegistration}
                       isLoading={isLoading}
+                      isLoggedIn={isLoggedIn}
+                      handleSubmitRegistration={handleSubmitRegistration}
                     />
                   }
                 />
@@ -393,8 +405,9 @@ function App() {
                   path="/signin"
                   element={
                     <Login
-                      handleSubmitLogin={handleSubmitLogin}
                       isLoading={isLoading}
+                      isLoggedIn={isLoggedIn}
+                      handleSubmitLogin={handleSubmitLogin}
                     />
                   }
                 />

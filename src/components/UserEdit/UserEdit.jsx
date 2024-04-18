@@ -25,6 +25,10 @@ function UserEdit({ handleUpdateUser, handleLogout, isLoading }) {
 
   const currentUser = useContext(CurrentUserContext);
 
+  // Проверяем равны ли текущие значения имени и почты юзера в контексте, тому что введено в полях ввода
+  const hasUpdatedProfileData =
+    currentUser.name !== name || currentUser.email !== email;
+
   // Обновление значений формы при изменении данных пользователя или состояния загрузки
   useEffect(() => {
     resetForm();
@@ -39,6 +43,11 @@ function UserEdit({ handleUpdateUser, handleLogout, isLoading }) {
   // Обработчик отправки формы
   function handleSubmit(e) {
     e.preventDefault();
+
+    if (!hasUpdatedProfileData) {
+      return;
+    }
+
     console.log(formValues);
     handleUpdateUser(formValues);
   }
@@ -53,6 +62,7 @@ function UserEdit({ handleUpdateUser, handleLogout, isLoading }) {
       name={name}
       handleSubmit={handleSubmit}
       handleLogout={handleLogout}
+      isDisabledSubmitButton={!hasUpdatedProfileData}
     >
       {/* Поле ввода имени пользователя */}
       <Input

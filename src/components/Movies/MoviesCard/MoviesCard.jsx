@@ -17,8 +17,7 @@ const MoviesCard = ({
 
   // Функция для определения, сохранен ли фильм в избранном.
   function isSaved(card) {
-    console.log('card', card);
-    return savedMovies.some((f) => f.movieId === card.id);
+    return savedMovies.some((savedMovie) => savedMovie.movieId === card.id);
   }
 
   //функция для создания объекта карточки фильма
