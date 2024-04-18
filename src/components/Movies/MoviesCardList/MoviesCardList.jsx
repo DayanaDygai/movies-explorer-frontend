@@ -2,7 +2,7 @@ import React from 'react';
 import MoviesCard from '../MoviesCard/MoviesCard.jsx';
 import { useLocation } from 'react-router-dom';
 import styles from './MoviesCardList.module.css';
-import Preloader from '../Preloader/Preloader.jsx';
+import Preloader from '../../Preloader/Preloader.jsx';
 import useResponsiveMovieCount from '../../../hooks/useResponsiveMovieCount.js';
 
 // Компонент для отображения списка фильмов

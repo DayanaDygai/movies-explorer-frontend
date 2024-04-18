@@ -1,6 +1,6 @@
 import React from 'react';
 import styles from './Profile.module.css';
-import Preloader from '../Movies/Preloader/Preloader';
+import Preloader from '../Preloader/Preloader';
 
 // Компонент профиля пользователя
 function Profile({
