@@ -8,3 +8,6 @@
 >>>>>>> merge-level-2
 
 
+ссылка на pull:
+https://github.com/DayanaDygai/movies-explorer-frontend/pull/7
+
