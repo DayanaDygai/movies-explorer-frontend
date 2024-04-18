@@ -1,14 +1,19 @@
-function MoviesApi() {
-    return fetch('https://api.nomoreparties.co/beatfilm-movies', {
-      method: 'GET',
-      headers: { 'Content-Type': 'application/json' },
-    }).then((res) => {
-      if (res.ok) {
-        return res.json();
-      }
-  
-      throw new Error(res.status);
-    });
+import { MOVIES_API_BASE_URL } from './constants';
+
+async function request(url) {
+  try {
+    const response = await fetch(`${MOVIES_API_BASE_URL}${url}`);
+    if (!response.ok) {
+      throw new Error('Ошибка при выполнении запроса. Пожалуйста, проверьте соединение и доступность сервера.');
+    }
+    return await response.json();
+  } catch (error) {
+    console.error("Ошибка запроса:", error);
+    throw error;
   }
-  
-  export default MoviesApi;
+}
+
+export function moviesApi() {
+  return request('/beatfilm-movies');
+}
+

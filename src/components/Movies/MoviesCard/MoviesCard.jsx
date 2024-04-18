@@ -1,53 +1,64 @@
-import React, { useState } from 'react';
+import React from 'react';
 import styles from './MoviesCard.module.css'; 
+import { Link, useLocation } from 'react-router-dom';
+import { MOVIES_API_BASE_URL, createMovieObject } from '../../../utils/constants';
 
-function MoviesCard({ movieName, movieImage, movieLink, isLiked, onLike, isSavedMoviesPage, onRemove  }) {
-  const [liked, setLiked] = useState(isLiked);
+// Компонент для отображения карточки фильма.
+const MoviesCard = ({ movie, toggleFavoriteStatus, removeMovieById, savedMovies }) => {
 
-  const handleLikeClick = () => {
-    setLiked(!liked);
-    onLike();
-  };
-  const handleRemoveClick = () => {
-    onRemove();
-  };
-  const likeButtonClass = liked ? styles['button-card-like_active'] : styles['movies-card__like-button'];
+  const location = useLocation();
 
+   // Функция для определения, сохранен ли фильм в избранном.
+  function isSaved(card) {
+    console.log("card", card);
+    return savedMovies.some((f) => f.movieId === card.id);
+  }
 
+  //функция для создания объекта карточки фильма
+  const handleToggleFavorite = (e) => {
+    const movieData = createMovieObject(movie);
+    toggleFavoriteStatus(e, movieData);
+};
+
+    // Расчет продолжительности фильма в часах и минутах.
+  const durationHours = Math.floor(movie.duration / 60);
+  const durationMinutes = movie.duration % 60;
+  const durationString = `${durationHours}ч ${durationMinutes}м`;
 
   return (
     <article className={styles["movies-card"]}>
       <div className={styles["movies-card__cover"]}>
-        <a href={movieLink} target="_blank" rel="noreferrer">
+        <Link
+        to={movie.trailerLink} target="_blank" rel="noreferrer">
           <img
             className={styles["movies-card__image"]}
-            src={movieImage}
-            alt={movieName}
+            src={location.pathname === '/movies' ? `${MOVIES_API_BASE_URL}${movie.image.url}` : `${movie.image}`}
+             alt={movie.nameRU}
           />
-        </a>
+        </Link>
       </div>
       <div className={styles["movies-card__footer"]}>
-        <div className={styles["movies-card__data"]}>
-          <h2 className={styles["movies-card__name"]}>{movieName}</h2>
-          {!isSavedMoviesPage && (
-            <button
-              className={likeButtonClass}
-              type="button"
-              aria-label="Лайкнуть фильм"
-              onClick={handleLikeClick}
-            />
-          )}
-          {isSavedMoviesPage && (
-            <button
-              className={styles["button-card-delete"]}
-              type="button"
-              aria-label="Удалить фильм"
-              onClick={handleRemoveClick}
-            /> )}
+       <div className={styles["movies-card__data"]}>
+       <h2 className={styles["movies-card__name"]}>{movie.nameRU}</h2>
+       {location.pathname === '/movies' ? (
+          <input
+            className={styles['card__like_button']}
+            type='checkbox'
+            checked={isSaved(movie)}
+            onChange={(e) =>
+              handleToggleFavorite(e)
+            }
+          />
+        ) : (
+          <button
+            className={styles['button-card-delete']}
+            type='button'
+            onClick={() => removeMovieById(movie._id)}></button>
+        )}          
           </div>
-        <div className={styles["movies-card__meta"]}>
-          <h2 className={styles["movie__duration"]}>1ч 42м</h2>
-        </div>
+          </div>
+      <div className={styles["movies-card__meta"]}>
+        <h2 className={styles["movie__duration"]}>{durationString}</h2>
       </div>
     </article>
   );

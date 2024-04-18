@@ -1,85 +1,90 @@
-import React, { useState, useEffect } from 'react';
+import React from 'react';
 import MoviesCard from '../MoviesCard/MoviesCard.jsx';
+import { useLocation } from 'react-router-dom';
 import styles from './MoviesCardList.module.css';
+import Preloader from '../Preloader/Preloader.jsx';
+import useResponsiveMovieCount from '../../../hooks/useResponsiveMovieCount.js';
 
-function MoviesCardsList({ movies, isSavedMoviesPage  }) {
-  const [visibleCards, setVisibleCards] = useState([]);
-    const [savedMovies, setSavedMovies] = useState([]);
+// Компонент для отображения списка фильмов
+const MoviesCardsList = ({
+  movies,
+  isLoading,
+  isShortMoviesFilterActive,
+  shortMovies,
+  isMoviesNotFound,
+  isSavedMoviesNotFound,
+  toggleFavoriteStatus,
+  savedMovies,
+  shortSavedFilms,
+  removeMovieById,
+  setIsShortSavedMoviesFilterActive,
+  filteredSavedMovies,
+}) => {
+  const location = useLocation();// получаем текущий путь страницы
 
-  const handleLikeClick = (movie) => {
-    // Проверяем, есть ли уже фильм в сохраненных
-    const isSaved = savedMovies.includes(movie);
-    
-    // Обновляем список сохраненных фильмов
-    setSavedMovies(isSaved 
-      ? savedMovies.filter((m) => m !== movie) 
-      : [...savedMovies, movie]);
-  };
-
-  useEffect(() => {
-    const setInitialVisibleCards = () => {
-      const width = window.innerWidth;
-      let initialVisibleCards;
-
-      if (width < 768) {
-        initialVisibleCards = 5;
-      } else if (width >= 768 && width < 1024) {
-        initialVisibleCards = 8;
-      } else {
-        initialVisibleCards = 16;
-      }
-
-      setVisibleCards(movies.slice(0, initialVisibleCards));
-    };
-
-    setInitialVisibleCards();
-    window.addEventListener('resize', setInitialVisibleCards);
-
-    return () => {
-      window.removeEventListener('resize', setInitialVisibleCards);
-    };
-  }, [movies]);
-
-  const loadMore = () => {
-    const width = window.innerWidth;
-    let additionalCards;
-
-    if (width < 768) {
-      additionalCards = 5;
-    } else if (width >= 768 && width < 1024) {
-      additionalCards = 8;
-    } else {
-      additionalCards = 16;
-    }
-
-    setVisibleCards(current => [
-      ...current,
-      ...movies.slice(current.length, current.length + additionalCards)
-    ]);
-  };
+  const { loadMoreMovies, displayedMovieCount } = useResponsiveMovieCount();// хук для управления отображением количества фильмов на странице
 
   return (
-    <div className={styles["movies-list"]}>
-      {visibleCards.map((movie, index) => (
-          <MoviesCard
-          key={index}
-          movieName={movie.movieName}
-          movieImage={movie.movieImage}
-          movieLink={movie.movieLink}
-          onLike={() => handleLikeClick(movie)}
-          isLiked={savedMovies.includes(movie)}
-          movies={movies}
-          isSavedMoviesPage={isSavedMoviesPage}
-        />
-      ))}
-      
-        <button className={styles["movies-list__more-button"]} onClick={loadMore}>
-          Ещё
-        </button>
+    <>
+      {location.pathname === '/movies' ? (
+        (isLoading && <Preloader />) || ( // если идет загрузка, отображаем прелоадер
+          <>
+            {(isMoviesNotFound || (isShortMoviesFilterActive && shortMovies.length === 0)) && ( // если нет результатов поиска или отфильтрованных коротких фильмов, отображаем сообщение
+              <h2 className={styles["movies__not-found"]}>Ничего не найдено</h2>
+            )}
 
-    </div>
+            {
+              <section className={styles["movies-list"]}>
+                {(isShortMoviesFilterActive ? shortMovies : movies).slice(0, displayedMovieCount).map((movie, i) => (
+                  <MoviesCard // компонент для отображения карточки фильма
+                    movie={movie}
+                    key={movie.id}
+                    toggleFavoriteStatus={toggleFavoriteStatus}
+                    savedMovies={savedMovies}
+                  />
+                ))}
+              </section>
+            }
+            {/* кнопка "Ещё", если есть еще фильмы для отображения */}
+            {isShortMoviesFilterActive
+              ? shortMovies.length > displayedMovieCount &&  <button
+              className={styles["movies-list__more-button"]}
+              type='button'
+              onClick={loadMoreMovies}
+              tabIndex={1}>
+              Ещё
+            </button>
+              : movies.length > displayedMovieCount &&  <button
+              className={styles["movies-list__more-button"]}
+              type='button'
+              onClick={loadMoreMovies}
+              tabIndex={1}>
+              Ещё
+            </button>}
+          </>
+        )
+      ) : ( // если путь не "/movies"
+        <>
+          {(isSavedMoviesNotFound || (setIsShortSavedMoviesFilterActive && shortSavedFilms.length === 0)) && (
+            <h2 className={styles["movies_list-notfound"]}>Ничего не найдено</h2>
+          )}
+          <ul className={styles["movies-list"]}>
+            {(setIsShortSavedMoviesFilterActive ? shortSavedFilms : filteredSavedMovies)
+              .slice(0, displayedMovieCount)
+              .map((movie, i) => (
+                <MoviesCard // компонент для отображения карточки фильма
+                movie={movie}
+                  key={movie._id}
+                  removeMovieById={removeMovieById}
+                  savedMovies={savedMovies}
+                />
+              ))}
+          </ul>
+        </>
+      )}
+    </>
   );
-}
+};
 
 export default MoviesCardsList;
 

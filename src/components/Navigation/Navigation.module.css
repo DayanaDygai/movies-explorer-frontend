@@ -66,6 +66,15 @@
   line-height: 1.384;
 }
 
+.nav__item-white{
+  color: #FFFFFF;
+}
+
+.nav__item-black{
+  color:black;
+}
+
+
 @media (max-width: 848px) { 
   .nav__item {
     font-size: 18px;

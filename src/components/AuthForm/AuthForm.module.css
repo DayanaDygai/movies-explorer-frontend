@@ -85,6 +85,19 @@
   }
   
   .auth-form__submit-button_invalid {
+    font-family: "Inter", "Arial", sans-serif;
+    width: 100%;
+    margin-top: 77px;
+    padding: 14px;
+    box-sizing: border-box;
+    color: #fff;
+    font-weight: 400;
+    font-size: 14px;
+    border: none;
+    background-color: #3456F3;
+    border: none;
+    border-radius: 3px;
+    transition: 0.3s;
     background-color: #00000021;
 
   }
@@ -138,3 +151,4 @@
     }
   }
   
+

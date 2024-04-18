@@ -2,8 +2,13 @@ import React from 'react';
 import { useLocation } from 'react-router-dom';
 import styles from "./Footer.module.css"; 
 
+// Компонент Footer рендерит подвал сайта, который не отображается на некоторых страницах.
 function Footer() {
+  
+  // хук useLocation для доступа к текущему пути.
   const { pathname } = useLocation();
+
+   // Не отображать Footer на страницах профиля, входа, регистрации и странице ошибки 404.
   if (pathname === '/profile' || pathname === '/signin' || pathname === '/signup' || pathname === '/404') return null;
 
   return (
