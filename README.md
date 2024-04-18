@@ -9,5 +9,5 @@
 
 
 ссылка на pull:
-https://github.com/DayanaDygai/movies-explorer-frontend/pull/7
+[https://github.com/DayanaDygai/movies-explorer-frontend/pull/7](https://github.com/DayanaDygai/movies-explorer-frontend/pull/7/commits/22b96d17bdc592bdbbb68b0d2702e7a4cdf6abe7)
 
