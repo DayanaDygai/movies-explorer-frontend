@@ -1,13 +1,22 @@
+import React from 'react';
+import styles from './BurgerMenu.module.css';
 
-import React from "react";
-import styles from "./BurgerMenu.module.css";
+// Компонент для отображения и управления бургер-меню в мобильной версии сайта.
 
 function BurgerMenu({ onClick, isOpen }) {
-  const burgerClass = isOpen ? `${styles.burger} ${styles.burger_active}` : styles.burger;
+  // Вычисление класса для бургер-меню в зависимости от его состояния (открыто/закрыто).
+  const burgerClass = isOpen
+    ? `${styles.burger} ${styles.burger_active}`
+    : styles.burger;
 
   return (
     <div className={burgerClass} onClick={onClick}>
-      <span className={!isOpen ? styles["burger__item-open"] : styles["burger__item-close"]} />
+      {/*  span изменяет свой стиль в зависимости от состояния меню. */}
+      <span
+        className={
+          !isOpen ? styles['burger__item-open'] : styles['burger__item-close']
+        }
+      />
     </div>
   );
 }

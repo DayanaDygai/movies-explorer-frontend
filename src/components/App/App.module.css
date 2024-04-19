@@ -1,15 +1,13 @@
 .app {
-  background: #ffffff; 
-  color:#000000; 
+  background: #ffffff;
+  color: #000000;
   margin: 0 auto;
-  min-height: 100vh;
+  height: 100vh;
   min-width: 320px;
   width: 100%;
   display: flex;
   flex-direction: column;
-  max-width: 1280px; 
+  max-width: 1280px;
   /* padding: 0 20px;   */
   box-sizing: border-box;
-
 }
-

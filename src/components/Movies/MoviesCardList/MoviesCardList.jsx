@@ -1,85 +1,103 @@
-import React, { useState, useEffect } from 'react';
+import React from 'react';
+import { useLocation } from 'react-router-dom';
+import Preloader from '../../Preloader/Preloader.jsx';
 import MoviesCard from '../MoviesCard/MoviesCard.jsx';
+import { NOT_FOUND_TEXT } from './constants.js';
 import styles from './MoviesCardList.module.css';
 
-function MoviesCardsList({ movies, isSavedMoviesPage  }) {
-  const [visibleCards, setVisibleCards] = useState([]);
-    const [savedMovies, setSavedMovies] = useState([]);
-
-  const handleLikeClick = (movie) => {
-    // Проверяем, есть ли уже фильм в сохраненных
-    const isSaved = savedMovies.includes(movie);
-    
-    // Обновляем список сохраненных фильмов
-    setSavedMovies(isSaved 
-      ? savedMovies.filter((m) => m !== movie) 
-      : [...savedMovies, movie]);
-  };
-
-  useEffect(() => {
-    const setInitialVisibleCards = () => {
-      const width = window.innerWidth;
-      let initialVisibleCards;
-
-      if (width < 768) {
-        initialVisibleCards = 5;
-      } else if (width >= 768 && width < 1024) {
-        initialVisibleCards = 8;
-      } else {
-        initialVisibleCards = 16;
-      }
-
-      setVisibleCards(movies.slice(0, initialVisibleCards));
-    };
-
-    setInitialVisibleCards();
-    window.addEventListener('resize', setInitialVisibleCards);
-
-    return () => {
-      window.removeEventListener('resize', setInitialVisibleCards);
-    };
-  }, [movies]);
-
-  const loadMore = () => {
-    const width = window.innerWidth;
-    let additionalCards;
-
-    if (width < 768) {
-      additionalCards = 5;
-    } else if (width >= 768 && width < 1024) {
-      additionalCards = 8;
-    } else {
-      additionalCards = 16;
-    }
-
-    setVisibleCards(current => [
-      ...current,
-      ...movies.slice(current.length, current.length + additionalCards)
-    ]);
-  };
+// Компонент для отображения списка фильмов
+const MoviesCardsList = ({
+  movies,
+  isLoading,
+  isShortMoviesFilterActive,
+  shortMovies,
+  isMoviesNotFound,
+  isSavedMoviesNotFound,
+  toggleFavoriteStatus,
+  savedMovies,
+  shortSavedFilms,
+  removeMovieById,
+  isShortSavedMoviesFilterActive,
+  filteredSavedMovies,
+  displayedMovieCount,
+  loadMoreMovies,
+}) => {
+  const location = useLocation(); // получаем текущий путь страницы
 
   return (
-    <div className={styles["movies-list"]}>
-      {visibleCards.map((movie, index) => (
-          <MoviesCard
-          key={index}
-          movieName={movie.movieName}
-          movieImage={movie.movieImage}
-          movieLink={movie.movieLink}
-          onLike={() => handleLikeClick(movie)}
-          isLiked={savedMovies.includes(movie)}
-          movies={movies}
-          isSavedMoviesPage={isSavedMoviesPage}
-        />
-      ))}
-      
-        <button className={styles["movies-list__more-button"]} onClick={loadMore}>
-          Ещё
-        </button>
+    <>
+      {location.pathname === '/movies' ? (
+        (isLoading && <Preloader />) || ( // если идет загрузка, отображаем прелоадер
+          <>
+            {(isMoviesNotFound ||
+              (isShortMoviesFilterActive && shortMovies.length === 0)) && ( // если нет результатов поиска или отфильтрованных коротких фильмов, отображаем сообщение
+              <h2 className={styles['movies__not-found']}>{NOT_FOUND_TEXT}</h2>
+            )}
 
-    </div>
+            {
+              <section className={styles['movies-list']}>
+                {(isShortMoviesFilterActive ? shortMovies : movies)
+                  .slice(0, displayedMovieCount)
+                  .map((movie, i) => (
+                    <MoviesCard
+                      movie={movie}
+                      key={movie.id}
+                      toggleFavoriteStatus={toggleFavoriteStatus}
+                      savedMovies={savedMovies}
+                    />
+                  ))}
+              </section>
+            }
+            {/* кнопка "Ещё", если есть еще фильмы для отображения */}
+            {isShortMoviesFilterActive
+              ? shortMovies.length > displayedMovieCount && (
+                  <button
+                    className={styles['movies-list__more-button']}
+                    type="button"
+                    onClick={loadMoreMovies}
+                    tabIndex={1}
+                  >
+                    Ещё
+                  </button>
+                )
+              : movies.length > displayedMovieCount && (
+                  <button
+                    className={styles['movies-list__more-button']}
+                    type="button"
+                    onClick={loadMoreMovies}
+                    tabIndex={1}
+                  >
+                    Ещё
+                  </button>
+                )}
+          </>
+        )
+      ) : (
+        <>
+          {(isSavedMoviesNotFound ||
+            (isShortSavedMoviesFilterActive &&
+              shortSavedFilms.length === 0)) && (
+            <h2 className={styles['movies_list-notfound']}>{NOT_FOUND_TEXT}</h2>
+          )}
+          <ul className={styles['movies-list']}>
+            {(isShortSavedMoviesFilterActive
+              ? shortSavedFilms
+              : filteredSavedMovies.length || isSavedMoviesNotFound
+                ? filteredSavedMovies
+                : savedMovies
+            ).map((movie, i) => (
+              <MoviesCard
+                movie={movie}
+                key={movie._id}
+                removeMovieById={removeMovieById}
+                savedMovies={savedMovies}
+              />
+            ))}
+          </ul>
+        </>
+      )}
+    </>
   );
-}
+};
 
 export default MoviesCardsList;
-

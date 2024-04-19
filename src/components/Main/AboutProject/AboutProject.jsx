@@ -1,10 +1,10 @@
 import React from 'react';
 
-import styles from "./AboutProject.module.css";
+import styles from './AboutProject.module.css';
 
 function AboutProject() {
   return (
-    <section id='about-project' className={styles['about-project']}>
+    <section id="about-project" className={styles['about-project']}>
       <div className={styles['about-project__container']}>
         <h2 className={styles['about-project__title']}>О проекте</h2>
         <ul className={styles['about-project__notes']}>

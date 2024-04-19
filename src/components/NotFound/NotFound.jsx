@@ -7,11 +7,11 @@ function NotFound() {
   const navigate = useNavigate();
 
   return (
-    <div className={styles["not-found"]}>
-      <p className={styles["not-found__code"]}>404</p>
-      <p className={styles["not-found__text"]}>Страница не найдена</p>
+    <div className={styles['not-found']}>
+      <p className={styles['not-found__code']}>404</p>
+      <p className={styles['not-found__text']}>Страница не найдена</p>
       <button
-        className={styles["not-found__button"]}
+        className={styles['not-found__button']}
         onClick={() => navigate(-4)}
         type="button"
         aria-label="Вернуться на предыдущую страницу"
