@@ -233,6 +233,7 @@ function App() {
       await deleteSavedMovie(cardID); // API запрос на удаление фильма по ID
       const newCards = excludeMovieById(savedMovies, cardID); // Фильтрация списка фильмов после удаления
       updateSavedMovies(newCards); // Обновление состояния с новым списком
+      refreshFilteredSavedMovies(newCards);
     } catch (err) {
       console.error(err);
       alert(messageKeys.SERVER_ERROR);
@@ -339,10 +340,10 @@ function App() {
   }
 
   // Обновление отфильтрованных сохранённых фильмов
-  function refreshFilteredSavedMovies() {
+  function refreshFilteredSavedMovies(newSavedMovies) {
     try {
       const filteredSavedMovies = filterMoviesByQuery(
-        savedMovies,
+        newSavedMovies || savedMovies,
         savedMovieSearchQuery,
       );
       setFilteredSavedMovies(filteredSavedMovies);
@@ -454,7 +455,7 @@ function App() {
                       filteredSavedMovies={filteredSavedMovies}
                       removeMovieById={removeMovieById}
                       toggleSavedMoviesFilter={toggleSavedMoviesFilter}
-                      setIsShortSavedMoviesFilterActive={
+                      isShortSavedMoviesFilterActive={
                         isShortSavedMoviesFilterActive
                       }
                       shortSavedFilms={shortSavedMovies}
@@ -463,7 +464,7 @@ function App() {
                       handleSubmitSearchSavedMovies={
                         handleSubmitSearchSavedMovies
                       }
-                      setsetIsShortSavedMoviesFilterActive={
+                      setIsShortSavedMoviesFilterActive={
                         setIsShortSavedMoviesFilterActive
                       }
                       setFilteredSavedMovies={setFilteredSavedMovies}

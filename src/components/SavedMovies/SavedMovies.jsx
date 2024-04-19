@@ -39,19 +39,19 @@ const SavedMovies = ({
   filteredSavedMovies,
   removeMovieById,
   toggleSavedMoviesFilter,
-  setIsShortSavedMoviesFilterActive,
+  isShortSavedMoviesFilterActive,
   shortSavedFilms,
   valueInputSavedMovie,
   setValueInputSavedMovie,
   handleSubmitSearchSavedMovies,
-  setsetIsShortSavedMoviesFilterActive,
+  setIsShortSavedMoviesFilterActive,
   setFilteredSavedMovies,
   isSavedMoviesNotFound,
   setIsSavedMoviesNotFound,
 }) => {
-  // Эффект для обновления отфильтрованных сохраненных фильмов при изменении списка сохраненных фильмов
+  // При первом рендере сбрасываем фильтрованные фильмы
   // eslint-disable-next-line react-hooks/exhaustive-deps
-  useEffect(() => setFilteredSavedMovies(savedMovies), [savedMovies]);
+  useEffect(() => setFilteredSavedMovies([]), []);
 
   // Эффект для сброса флага об отсутствии сохраненных фильмов при монтировании компонента
   // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -61,14 +61,12 @@ const SavedMovies = ({
     <main className={styles['saved-movies']}>
       {/* Форма поиска сохраненных фильмов */}
       <SearchForm
-        toggleSavedMoviesFilter={toggleSavedMoviesFilter}
-        setIsShortSavedMoviesFilterActive={setIsShortSavedMoviesFilterActive}
-        setValueInputSavedMovie={setValueInputSavedMovie}
         valueInputSavedMovie={valueInputSavedMovie}
+        setValueInputSavedMovie={setValueInputSavedMovie}
+        isShortSavedMoviesFilterActive={isShortSavedMoviesFilterActive}
+        setIsShortSavedMoviesFilterActive={setIsShortSavedMoviesFilterActive}
         handleSubmitSearchSavedMovies={handleSubmitSearchSavedMovies}
-        setsetIsShortSavedMoviesFilterActive={
-          setsetIsShortSavedMoviesFilterActive
-        }
+        toggleSavedMoviesFilter={toggleSavedMoviesFilter}
       />
 
       {/* Список сохраненных фильмов */}
@@ -76,10 +74,11 @@ const SavedMovies = ({
         savedMovies={savedMovies}
         filteredSavedMovies={filteredSavedMovies}
         shortSavedFilms={shortSavedFilms}
-        setIsShortSavedMoviesFilterActive={setIsShortSavedMoviesFilterActive}
+        isShortSavedMoviesFilterActive={isShortSavedMoviesFilterActive}
         removeMovieById={removeMovieById}
         isSavedMoviesNotFound={isSavedMoviesNotFound}
         setIsSavedMoviesNotFound={setIsSavedMoviesNotFound}
+        hasSearchedSavedMovieValue={Boolean(valueInputSavedMovie)}
       />
     </main>
   );

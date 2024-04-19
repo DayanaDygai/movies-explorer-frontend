@@ -48,7 +48,6 @@ function UserEdit({ handleUpdateUser, handleLogout, isLoading }) {
       return;
     }
 
-    console.log(formValues);
     handleUpdateUser(formValues);
   }
 

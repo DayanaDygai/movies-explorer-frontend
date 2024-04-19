@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react';
+import { useLocation } from 'react-router-dom';
 import FilterCheckBox from './FilterCheckbox/FilterCheckbox.jsx';
 import styles from './SearchForm.module.css';
-import { useLocation } from 'react-router-dom';
 
 // Компонент формы поиска
 function SearchForm({
@@ -11,12 +11,12 @@ function SearchForm({
   movieSearchQuery,
   isShortMoviesFilterActive,
   toggleSavedMoviesFilter,
-  setIsShortSavedMoviesFilterActive,
+  isShortSavedMoviesFilterActive,
   setValueInputSavedMovie,
   valueInputSavedMovie,
   handleSubmitSearchSavedMovies,
-  setsetIsShortSavedMoviesFilterActive,
-  formValidation,
+  setIsShortSavedMoviesFilterActive,
+  resetDisplayedMovieCount,
 }) {
   const location = useLocation(); // получаем текущий путь страницы
 
@@ -24,10 +24,15 @@ function SearchForm({
   useEffect(() => {
     if (location.pathname === '/saved-movies') {
       setValueInputSavedMovie('');
-      setsetIsShortSavedMoviesFilterActive(false);
+      setIsShortSavedMoviesFilterActive(false);
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
+
+  const onSubmit = (event) => {
+    handleSubmit(event, isShortMoviesFilterActive);
+    resetDisplayedMovieCount();
+  };
 
   return (
     <div className={styles['search__container']}>
@@ -36,7 +41,7 @@ function SearchForm({
         <form
           className={styles['search__form']}
           name="search"
-          onSubmit={(e) => handleSubmit(e, isShortMoviesFilterActive)}
+          onSubmit={onSubmit}
           noValidate
         >
           <div className={styles['search__wrapper']}>
@@ -58,9 +63,7 @@ function SearchForm({
             toggleMoviesFilter={toggleMoviesFilter}
             isShortMoviesFilterActive={isShortMoviesFilterActive}
             toggleSavedMoviesFilter={toggleSavedMoviesFilter}
-            setIsShortSavedMoviesFilterActive={
-              setIsShortSavedMoviesFilterActive
-            }
+            isShortSavedMoviesFilterActive={isShortSavedMoviesFilterActive}
           />
         </form> // Если текущий путь не "/movies", отображаем форму для поиска сохранённых фильмов
       ) : (
@@ -95,9 +98,7 @@ function SearchForm({
             toggleMoviesFilter={toggleMoviesFilter}
             isShortMoviesFilterActive={isShortMoviesFilterActive}
             toggleSavedMoviesFilter={toggleSavedMoviesFilter}
-            setIsShortSavedMoviesFilterActive={
-              setIsShortSavedMoviesFilterActive
-            }
+            isShortSavedMoviesFilterActive={isShortSavedMoviesFilterActive}
           />
         </form>
       )}

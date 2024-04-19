@@ -1,10 +1,11 @@
 import React from 'react';
-import styles from './MoviesCard.module.css';
 import { Link, useLocation } from 'react-router-dom';
 import {
   MOVIES_API_BASE_URL,
   createMovieObject,
 } from '../../../utils/constants';
+import { ONE_HOUR_IN_MINUTES } from './constants';
+import styles from './MoviesCard.module.css';
 
 // Компонент для отображения карточки фильма.
 const MoviesCard = ({
@@ -27,8 +28,8 @@ const MoviesCard = ({
   };
 
   // Расчет продолжительности фильма в часах и минутах.
-  const durationHours = Math.floor(movie.duration / 60);
-  const durationMinutes = movie.duration % 60;
+  const durationHours = Math.floor(movie.duration / ONE_HOUR_IN_MINUTES);
+  const durationMinutes = movie.duration % ONE_HOUR_IN_MINUTES;
   const durationString = `${durationHours}ч ${durationMinutes}м`;
 
   return (

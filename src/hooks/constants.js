@@ -1,0 +1,16 @@
+export const DEVICE_BREAKPOINTS = {
+  DESKTOP: 1280,
+  TABLET: 768,
+};
+
+export const DISPALYED_MOVIES_COUNT = {
+  DESKTOP: 16,
+  TABLET: 8,
+  MOBILE: 5,
+};
+
+export const ADDITIONAL_MOVIES_COUNT = {
+  DESKTOP: 4,
+  TABLET: 2,
+  MOBILE: 2,
+};

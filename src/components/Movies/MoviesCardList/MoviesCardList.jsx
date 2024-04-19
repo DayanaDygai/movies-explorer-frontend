@@ -1,9 +1,9 @@
 import React from 'react';
-import MoviesCard from '../MoviesCard/MoviesCard.jsx';
 import { useLocation } from 'react-router-dom';
-import styles from './MoviesCardList.module.css';
 import Preloader from '../../Preloader/Preloader.jsx';
-import useResponsiveMovieCount from '../../../hooks/useResponsiveMovieCount.js';
+import MoviesCard from '../MoviesCard/MoviesCard.jsx';
+import { NOT_FOUND_TEXT } from './constants.js';
+import styles from './MoviesCardList.module.css';
 
 // Компонент для отображения списка фильмов
 const MoviesCardsList = ({
@@ -17,12 +17,12 @@ const MoviesCardsList = ({
   savedMovies,
   shortSavedFilms,
   removeMovieById,
-  setIsShortSavedMoviesFilterActive,
+  isShortSavedMoviesFilterActive,
   filteredSavedMovies,
+  displayedMovieCount,
+  loadMoreMovies,
 }) => {
   const location = useLocation(); // получаем текущий путь страницы
-
-  const { loadMoreMovies, displayedMovieCount } = useResponsiveMovieCount(); // хук для управления отображением количества фильмов на странице
 
   return (
     <>
@@ -31,7 +31,7 @@ const MoviesCardsList = ({
           <>
             {(isMoviesNotFound ||
               (isShortMoviesFilterActive && shortMovies.length === 0)) && ( // если нет результатов поиска или отфильтрованных коротких фильмов, отображаем сообщение
-              <h2 className={styles['movies__not-found']}>Ничего не найдено</h2>
+              <h2 className={styles['movies__not-found']}>{NOT_FOUND_TEXT}</h2>
             )}
 
             {
@@ -39,7 +39,7 @@ const MoviesCardsList = ({
                 {(isShortMoviesFilterActive ? shortMovies : movies)
                   .slice(0, displayedMovieCount)
                   .map((movie, i) => (
-                    <MoviesCard // компонент для отображения карточки фильма
+                    <MoviesCard
                       movie={movie}
                       key={movie.id}
                       toggleFavoriteStatus={toggleFavoriteStatus}
@@ -73,29 +73,26 @@ const MoviesCardsList = ({
           </>
         )
       ) : (
-        // если путь не "/movies"
         <>
           {(isSavedMoviesNotFound ||
-            (setIsShortSavedMoviesFilterActive &&
+            (isShortSavedMoviesFilterActive &&
               shortSavedFilms.length === 0)) && (
-            <h2 className={styles['movies_list-notfound']}>
-              Ничего не найдено
-            </h2>
+            <h2 className={styles['movies_list-notfound']}>{NOT_FOUND_TEXT}</h2>
           )}
           <ul className={styles['movies-list']}>
-            {(setIsShortSavedMoviesFilterActive
+            {(isShortSavedMoviesFilterActive
               ? shortSavedFilms
-              : filteredSavedMovies
-            )
-              .slice(0, displayedMovieCount)
-              .map((movie, i) => (
-                <MoviesCard // компонент для отображения карточки фильма
-                  movie={movie}
-                  key={movie._id}
-                  removeMovieById={removeMovieById}
-                  savedMovies={savedMovies}
-                />
-              ))}
+              : filteredSavedMovies.length || isSavedMoviesNotFound
+                ? filteredSavedMovies
+                : savedMovies
+            ).map((movie, i) => (
+              <MoviesCard
+                movie={movie}
+                key={movie._id}
+                removeMovieById={removeMovieById}
+                savedMovies={savedMovies}
+              />
+            ))}
           </ul>
         </>
       )}

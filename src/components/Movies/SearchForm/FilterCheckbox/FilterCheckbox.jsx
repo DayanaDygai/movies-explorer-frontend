@@ -7,7 +7,7 @@ function FilterCheckBox({
   toggleMoviesFilter,
   isShortMoviesFilterActive,
   toggleSavedMoviesFilter,
-  setIsShortSavedMoviesFilterActive,
+  isShortSavedMoviesFilterActive,
 }) {
   const location = useLocation(); // получаем текущий путь страницы
 
@@ -25,7 +25,7 @@ function FilterCheckBox({
         <input
           type="checkbox"
           className={styles['checkbox__switch']}
-          checked={setIsShortSavedMoviesFilterActive} // устанавливаем состояние чекбокса
+          checked={isShortSavedMoviesFilterActive} // устанавливаем состояние чекбокса
           onChange={toggleSavedMoviesFilter} // обработчик изменения состояния чекбокса
         />
       )}
